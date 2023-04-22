@@ -1,20 +1,23 @@
 package niffler.test;
 
+import com.codeborne.selenide.CollectionCondition;
+import com.codeborne.selenide.Selenide;
+import io.qameta.allure.AllureId;
+import niffler.jupiter.annotation.Category;
+import niffler.jupiter.annotation.GenerateSpend;
+import niffler.jupiter.extension.CategoryExtension;
+import niffler.jupiter.extension.GenerateSpendExtension;
+import niffler.model.CurrencyValues;
+import niffler.model.SpendJson;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
 
-import com.codeborne.selenide.CollectionCondition;
-import com.codeborne.selenide.Selenide;
-import io.qameta.allure.AllureId;
-import niffler.jupiter.annotation.GenerateSpend;
-import niffler.model.CurrencyValues;
-import niffler.model.SpendJson;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
-
-@Disabled
+@ExtendWith({GenerateSpendExtension.class, CategoryExtension.class})
 public class SpendsWebTest extends BaseWebTest {
 
     @BeforeEach
@@ -26,28 +29,32 @@ public class SpendsWebTest extends BaseWebTest {
         $("button[type='submit']").click();
     }
 
+    @Category(
+            username = "dima",
+            category = "Car"
+    )
+
     @GenerateSpend(
-        username = "dima",
-        description = "QA GURU ADVANCED VOL 2",
-        currency = CurrencyValues.RUB,
-        amount = 52000.00,
-        category = "Обучение"
+            username = "dima",
+            description = "QA GURU ADVANCED VOL 2",
+            currency = CurrencyValues.RUB,
+            amount = 52000.00,
+            category = "Car"
     )
     @AllureId("101")
     @Test
     void spendShouldBeDeletedByActionInTable(SpendJson spend) {
         $(".spendings-table tbody").$$("tr")
-            .find(text(spend.getDescription()))
-            .$$("td").first()
-            .scrollTo()
-            .click();
+                .find(text(spend.getDescription()))
+                .$$("td").first()
+                .scrollTo()
+                .click();
 
         $$(".button_type_small").find(text("Delete selected"))
-            .click();
+                .click();
 
         $(".spendings-table tbody")
-            .$$("tr")
-            .shouldHave(CollectionCondition.size(0));
-        throw new IllegalStateException();
+                .$$("tr")
+                .shouldHave(CollectionCondition.size(0));
     }
 }
