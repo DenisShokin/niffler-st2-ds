@@ -1,4 +1,4 @@
-package niffler.test;
+package niffler.test.web;
 
 import com.codeborne.selenide.CollectionCondition;
 import com.codeborne.selenide.Selenide;
@@ -41,7 +41,7 @@ public class SpendsWebTest extends BaseWebTest {
             amount = 52000.00,
             category = "Fisher"
     )
-    @AllureId("101")
+    @AllureId("501")
     @Test
     void spendShouldBeDeletedByActionInTable(SpendJson spend) {
         $(".spendings-table tbody").$$("tr")

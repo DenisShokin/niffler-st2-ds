@@ -1,4 +1,4 @@
-package niffler.test;
+package niffler.test.web;
 
 
 import com.codeborne.selenide.Configuration;
