@@ -1,5 +1,6 @@
 package niffler.jupiter.extension;
 
+import io.qameta.allure.AllureId;
 import niffler.db.dao.NifflerUsersDAO;
 import niffler.db.dao.NifflerUsersDAOJdbc;
 import niffler.db.entity.Authority;
@@ -21,7 +22,7 @@ public class GenerateUserExtension implements ParameterResolver, BeforeEachCallb
     private final NifflerUsersDAO nifflerUsersDAO = new NifflerUsersDAOJdbc();
 
     @Override
-    public void beforeEach(ExtensionContext context) throws Exception {
+    public void beforeEach(ExtensionContext context) {
         GenerateUser annotation = context.getRequiredTestMethod()
                 .getAnnotation(GenerateUser.class);
 
@@ -44,7 +45,9 @@ public class GenerateUserExtension implements ParameterResolver, BeforeEachCallb
 
             nifflerUsersDAO.createUser(userEntity);
 
-            context.getStore(USER_ENTITY_EXTENSION_NAMESPACE).put("user", userEntity);
+            String allureIdValue = context.getRequiredTestMethod().getAnnotation(AllureId.class).value();
+
+            context.getStore(USER_ENTITY_EXTENSION_NAMESPACE).put("user" + allureIdValue, userEntity);
         }
     }
 
@@ -55,6 +58,8 @@ public class GenerateUserExtension implements ParameterResolver, BeforeEachCallb
 
     @Override
     public Object resolveParameter(ParameterContext parameterContext, ExtensionContext extensionContext) throws ParameterResolutionException {
-        return extensionContext.getStore(USER_ENTITY_EXTENSION_NAMESPACE).get("user", UserEntity.class);
+        String allureIdValue = extensionContext.getRequiredTestMethod().getAnnotation(AllureId.class).value();
+
+        return extensionContext.getStore(USER_ENTITY_EXTENSION_NAMESPACE).get("user" + allureIdValue, UserEntity.class);
     }
 }
