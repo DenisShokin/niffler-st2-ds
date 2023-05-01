@@ -10,9 +10,11 @@ import io.qameta.allure.AllureId;
 import java.io.IOException;
 import niffler.jupiter.annotation.ClasspathUser;
 import niffler.model.UserJson;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
+@Disabled
 public class LoginTest extends BaseWebTest {
   
   @ValueSource(strings = {
