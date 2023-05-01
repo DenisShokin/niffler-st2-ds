@@ -20,6 +20,7 @@ public class NifflerUsersDAOJdbc implements NifflerUsersDAO {
 
     private static final DataSource ds = DataSourceProvider.INSTANCE.getDataSource(ServiceDB.NIFFLER_AUTH);
 
+    // применение транзакции уже было реализовано в проекте
     @Override
     public int createUser(UserEntity user) {
         int executeUpdate;
