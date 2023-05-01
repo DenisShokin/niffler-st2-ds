@@ -6,6 +6,7 @@ import io.qameta.allure.AllureId;
 import niffler.db.dao.NifflerUsersDAO;
 import niffler.db.dao.NifflerUsersDAOJdbc;
 import niffler.db.entity.UserEntity;
+import niffler.jupiter.annotation.DeleteUser;
 import niffler.jupiter.annotation.GenerateUser;
 import org.junit.jupiter.api.Test;
 
@@ -18,6 +19,9 @@ public class LoginNewUserExtensionTest extends BaseWebTest {
 
     @GenerateUser(
             password = "54321",
+            username = "misha"
+    )
+    @DeleteUser(
             username = "misha"
     )
     @AllureId("201")
