@@ -28,6 +28,16 @@ public class NifflerUsersDAOHibernate extends JpaTransactionManager implements N
   }
 
   @Override
+  public UserEntity getUser(String userName) {
+    return null;
+  }
+
+  @Override
+  public int updateUser(UserEntity user) {
+    return 0;
+  }
+
+  @Override
   public int removeUser(UserEntity user) {
     remove(user);
     return 0;

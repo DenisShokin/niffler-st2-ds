@@ -44,6 +44,16 @@ public class NifflerUsersDAOSpringJdbc implements NifflerUsersDAO {
   }
 
   @Override
+  public UserEntity getUser(String userName) {
+    return null;
+  }
+
+  @Override
+  public int updateUser(UserEntity user) {
+    return 0;
+  }
+
+  @Override
   public int removeUser(UserEntity user) {
     return transactionTemplate.execute(st -> {
       jdbcTemplate.update("DELETE FROM authorities WHERE user_id = ?", user.getId());
