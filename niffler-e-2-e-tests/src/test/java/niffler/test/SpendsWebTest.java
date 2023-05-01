@@ -3,9 +3,9 @@ package niffler.test;
 import com.codeborne.selenide.CollectionCondition;
 import com.codeborne.selenide.Selenide;
 import io.qameta.allure.AllureId;
-import niffler.jupiter.annotation.Category;
+import niffler.jupiter.annotation.GenerateCategory;
 import niffler.jupiter.annotation.GenerateSpend;
-import niffler.jupiter.extension.CategoryExtension;
+import niffler.jupiter.extension.GenerateCategoryExtension;
 import niffler.jupiter.extension.GenerateSpendExtension;
 import niffler.model.CurrencyValues;
 import niffler.model.SpendJson;
@@ -17,7 +17,7 @@ import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
 
-@ExtendWith({GenerateSpendExtension.class, CategoryExtension.class})
+@ExtendWith({GenerateSpendExtension.class, GenerateCategoryExtension.class})
 public class SpendsWebTest extends BaseWebTest {
 
     @BeforeEach
@@ -29,9 +29,9 @@ public class SpendsWebTest extends BaseWebTest {
         $("button[type='submit']").click();
     }
 
-    @Category(
+    @GenerateCategory(
             username = "dima",
-            category = "Car"
+            category = "Fisher"
     )
 
     @GenerateSpend(
@@ -39,14 +39,14 @@ public class SpendsWebTest extends BaseWebTest {
             description = "QA GURU ADVANCED VOL 2",
             currency = CurrencyValues.RUB,
             amount = 52000.00,
-            category = "Car"
+            category = "Fisher"
     )
     @AllureId("101")
     @Test
     void spendShouldBeDeletedByActionInTable(SpendJson spend) {
         $(".spendings-table tbody").$$("tr")
                 .find(text(spend.getDescription()))
-                .$$("td").first()
+                .$("td")
                 .scrollTo()
                 .click();
 

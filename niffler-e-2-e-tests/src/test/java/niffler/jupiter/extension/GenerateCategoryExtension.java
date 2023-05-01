@@ -1,21 +1,19 @@
 package niffler.jupiter.extension;
 
+import io.qameta.allure.AllureId;
 import niffler.api.SpendService;
-import niffler.jupiter.annotation.Category;
+import niffler.jupiter.annotation.GenerateCategory;
 import niffler.model.CategoryJson;
 import okhttp3.OkHttpClient;
 import org.junit.jupiter.api.extension.BeforeEachCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
-import org.junit.jupiter.api.extension.ParameterContext;
-import org.junit.jupiter.api.extension.ParameterResolutionException;
-import org.junit.jupiter.api.extension.ParameterResolver;
 import retrofit2.Retrofit;
 import retrofit2.converter.jackson.JacksonConverterFactory;
 
-public class CategoryExtension implements ParameterResolver, BeforeEachCallback {
+public class GenerateCategoryExtension implements BeforeEachCallback {
 
     public static ExtensionContext.Namespace NAMESPACE = ExtensionContext.Namespace
-            .create(CategoryExtension.class);
+            .create(GenerateCategoryExtension.class);
 
     private static final OkHttpClient httpClient = new OkHttpClient.Builder()
             .build();
@@ -30,8 +28,8 @@ public class CategoryExtension implements ParameterResolver, BeforeEachCallback 
 
     @Override
     public void beforeEach(ExtensionContext context) throws Exception {
-        Category annotation = context.getRequiredTestMethod()
-                .getAnnotation(Category.class);
+        GenerateCategory annotation = context.getRequiredTestMethod()
+                .getAnnotation(GenerateCategory.class);
 
         if (annotation != null) {
             CategoryJson category = new CategoryJson();
@@ -39,17 +37,9 @@ public class CategoryExtension implements ParameterResolver, BeforeEachCallback 
             category.setCategory(annotation.category());
 
             CategoryJson created = spendService.addCategory(category).execute().body();
-            context.getStore(NAMESPACE).put("category", created);
+            String allureTestId = context.getRequiredTestMethod().getAnnotation(AllureId.class).value();
+            context.getStore(NAMESPACE).put("category" + allureTestId, created);
         }
     }
 
-    @Override
-    public boolean supportsParameter(ParameterContext parameterContext, ExtensionContext extensionContext) throws ParameterResolutionException {
-        return false;
-    }
-
-    @Override
-    public Object resolveParameter(ParameterContext parameterContext, ExtensionContext extensionContext) throws ParameterResolutionException {
-        return null;
-    }
 }
