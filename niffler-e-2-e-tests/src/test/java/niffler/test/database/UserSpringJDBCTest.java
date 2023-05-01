@@ -1,4 +1,4 @@
-package niffler.test;
+package niffler.test.database;
 
 import io.qameta.allure.AllureId;
 import niffler.db.dao.NifflerUsersDAOSpringJdbc;
@@ -13,16 +13,16 @@ import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class UserJDBCTest {
+public class UserSpringJDBCTest {
 
-    private NifflerUsersDAOSpringJdbc usersDAOSpringJdbc = new NifflerUsersDAOSpringJdbc();
-
+    private final NifflerUsersDAOSpringJdbc usersDAOSpringJdbc = new NifflerUsersDAOSpringJdbc();
+    private final String TEST_PWD = "6543210";
 
     @GenerateUser(
-            password = "54321",
-            username = "ivan9"
+            password = TEST_PWD,
+            username = "ivan"
     )
-    @AllureId("501")
+    @AllureId("801")
     @Test
     void getUserSpringTest(UserEntity user) {
         assertEquals(user.getUsername(),
@@ -30,23 +30,23 @@ public class UserJDBCTest {
                 "Username не совпадает");
     }
 
-    @AllureId("502")
+    @AllureId("802")
     @GenerateUser(
-            password = "654321",
-            username = "michail3"
+            password = TEST_PWD,
+            username = "michail"
     )
     @Test
     void updateUserSpringTest(UserEntity user) {
-        user.setUsername("michail3_upd");
+        user.setUsername("michail_upd");
         Assertions.assertEquals(1, usersDAOSpringJdbc.updateUser(user), "Не удалось обновить UserEntity");
     }
 
-    @AllureId("503")
+    @AllureId("803")
     @Test
     void createUserSpringTest() {
         UserEntity user = new UserEntity();
-        user.setUsername("spring2");
-        user.setPassword("123456");
+        user.setUsername("alex");
+        user.setPassword(TEST_PWD);
         user.setEnabled(true);
         user.setAccountNonExpired(true);
         user.setAccountNonLocked(true);
@@ -61,4 +61,5 @@ public class UserJDBCTest {
         ).toList());
         usersDAOSpringJdbc.createUser(user);
     }
+
 }

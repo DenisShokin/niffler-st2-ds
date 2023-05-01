@@ -1,7 +1,8 @@
-package niffler.test;
+package niffler.test.web;
 
 import com.codeborne.selenide.Selenide;
 import io.qameta.allure.Allure;
+import io.qameta.allure.AllureId;
 import niffler.db.dao.NifflerUsersDAO;
 import niffler.db.dao.NifflerUsersDAOJdbc;
 import niffler.db.entity.UserEntity;
@@ -11,17 +12,15 @@ import org.junit.jupiter.api.Test;
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class LoginNewUserExtensionTest extends BaseWebTest {
 
-    private NifflerUsersDAO usersDAO = new NifflerUsersDAOJdbc();
 
     @GenerateUser(
             password = "54321",
-            username = "misha",
-            enabled = true
+            username = "misha"
     )
+    @AllureId("201")
     @Test
     void loginTest(UserEntity user) {
         Allure.step("open page", () -> Selenide.open("http://127.0.0.1:3000/main"));
@@ -34,18 +33,4 @@ public class LoginNewUserExtensionTest extends BaseWebTest {
         $(".header").should(visible).shouldHave(text("Niffler. The coin keeper."));
     }
 
-    @GenerateUser(
-            password = "54321",
-            username = "Petr20",
-            enabled = true
-    )
-    @Test
-    void updateUserTest(UserEntity user) {
-        String updateUsername = "Petr_upd20";
-        user.setPassword("123456");
-        user.setUsername(updateUsername);
-        assertEquals(1, usersDAO.updateUser(user), "Не удалось обновить UserEntity");
-
-        assertEquals(updateUsername, usersDAO.getUser(user.getUsername()).getUsername(), "Username не совпадает");
-    }
 }
