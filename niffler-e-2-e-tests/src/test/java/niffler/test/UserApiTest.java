@@ -13,7 +13,8 @@ public class UserApiTest {
     private final UserDataServiceImpl service = new UserDataServiceImpl();
 
     @ValueSource(strings = {
-            "testdata/dimaCorrectUpdate.json"
+            "testdata/dimaCorrectUpdate.json",
+            "testdata/denisCorrectUpdate.json"
     })
     @ParameterizedTest
     void successUpdateUserInfo(@ClasspathUser UserJson user) {
@@ -23,7 +24,7 @@ public class UserApiTest {
 
     @ValueSource(strings = {
             "testdata/incorrectUsername.json",
-            "testdata/incorrectUsername.json"
+            "testdata/emptyUsername.json"
     })
     @ParameterizedTest
     void errorUpdateUserInfo(@ClasspathUser UserJson user) {

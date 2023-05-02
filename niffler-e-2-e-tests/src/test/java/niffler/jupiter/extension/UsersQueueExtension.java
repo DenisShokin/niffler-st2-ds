@@ -47,7 +47,7 @@ public class UsersQueueExtension implements
     public void beforeEach(ExtensionContext context) {
         final String testId = getTestId(context);
         Parameter[] testParameters = context.getRequiredTestMethod().getParameters();
-        Map<UserType, UserJson> users = new LinkedHashMap<>();
+        Map<UserJson, UserType> users = new LinkedHashMap<>();
 
         for (Parameter parameter : testParameters) {
 
@@ -63,7 +63,7 @@ public class UsersQueueExtension implements
                         case INVITATION_RECEIVED -> user = USERS_INVITATION_RECEIVED_QUEUE.poll();
                     }
                 }
-                users.put(userType, user);
+                users.put(user, userType);
                 context.getStore(USER_EXTENSION_NAMESPACE).put(testId, users);
             }
 
@@ -98,8 +98,8 @@ public class UsersQueueExtension implements
     public UserJson resolveParameter(ParameterContext parameterContext,
                                      ExtensionContext extensionContext) throws ParameterResolutionException {
         final String testId = getTestId(extensionContext);
-        return (UserJson) ((Map<UserJson, UserType>) extensionContext.getStore(USER_EXTENSION_NAMESPACE)
-                .get(testId)).values().toArray()[parameterContext.getIndex()];
+        return (UserJson) ((Map<UserType, UserJson>) extensionContext.getStore(USER_EXTENSION_NAMESPACE)
+                .get(testId)).keySet().toArray()[parameterContext.getIndex()];
     }
 
     private String getTestId(ExtensionContext context) {
