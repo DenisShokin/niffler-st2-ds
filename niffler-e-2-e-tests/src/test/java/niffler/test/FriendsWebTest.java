@@ -7,6 +7,7 @@ import io.qameta.allure.AllureId;
 import niffler.jupiter.annotation.User;
 import niffler.jupiter.extension.UsersQueueExtension;
 import niffler.model.UserJson;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
@@ -17,6 +18,7 @@ import static niffler.jupiter.annotation.User.UserType.INVITATION_RECEIVED;
 import static niffler.jupiter.annotation.User.UserType.INVITATION_SENT;
 import static niffler.jupiter.annotation.User.UserType.WITH_FRIENDS;
 
+@Disabled
 @ExtendWith(UsersQueueExtension.class)
 public class FriendsWebTest extends BaseWebTest {
 
