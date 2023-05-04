@@ -73,7 +73,7 @@ public class UsersQueueExtension implements
 
     @SuppressWarnings("unchecked")
     @Override
-    public void afterTestExecution(ExtensionContext context) throws Exception {
+    public void afterTestExecution(ExtensionContext context) {
         final String testId = getTestId(context);
         Map<UserType, UserJson> user = (Map<UserType, UserJson>) context.getStore(USER_EXTENSION_NAMESPACE)
                 .get(testId);
@@ -98,7 +98,7 @@ public class UsersQueueExtension implements
     public UserJson resolveParameter(ParameterContext parameterContext,
                                      ExtensionContext extensionContext) throws ParameterResolutionException {
         final String testId = getTestId(extensionContext);
-        return (UserJson) ((Map<UserType, UserJson>) extensionContext.getStore(USER_EXTENSION_NAMESPACE)
+        return (UserJson) ((LinkedHashMap<UserType, UserJson>) extensionContext.getStore(USER_EXTENSION_NAMESPACE)
                 .get(testId)).keySet().toArray()[parameterContext.getIndex()];
     }
 

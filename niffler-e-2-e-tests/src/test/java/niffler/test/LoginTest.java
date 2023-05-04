@@ -21,7 +21,7 @@ public class LoginTest extends BaseWebTest {
   })
   @AllureId("104")
   @ParameterizedTest
-  void loginTest(@ClasspathUser UserJson user) throws IOException {
+  void loginTest(@ClasspathUser UserJson user) {
     Allure.step("open page", () -> Selenide.open("http://127.0.0.1:3000/main"));
     $("a[href*='redirect']").click();
     $("input[name='username']").setValue(user.getUsername());
